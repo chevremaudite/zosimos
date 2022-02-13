@@ -1,0 +1,52 @@
+//-----------------93 BANG BANG----------------//
+//Classic Virtual analog kick and tom generator
+//PARAMETERS:
+//  1 - Pitch : Main osc pitch
+//  2 - Pitch Mod Depth : Main osc pitch modulation amount
+//  3 - Pitch Decay : Main osc pitch modulation envelope decay in seconds
+//  4 - Noise Amount : Noise transient volume
+//  5 - Noise Pitch : Noise transient's bandpass frequency
+//  6 - Noise Decay : Noise transient envelope decay in seconds
+//  7 - Wave : Main osc waveform going from sine to *almost* square with wavemorphing
+//  8 - TODO : Find one last interesting parameter !
+
+import("filter.dsp");
+import("volenv.dsp");
+import("utilities.dsp");
+
+bb93(trig) = hgroup("[1]93 Bang Bang", (carrier+noise)*(trig:volEnv):drumSmooth)
+with{
+    pitchEnv = en.are(pA,pD)
+    with{
+        pA = 0;
+        pD = vslider("[3]Pitch Decay[style:knob]", 0.01, 0, 0.2, 0.01);
+    };
+    carrier = (wave(pitch+pitchDepth*(trig:pitchEnv)) ) 
+    with{
+        wave(f) = os.osc(f)*sinS, triangle(f)*triS, os.square(f)*squS:> _
+        with{
+            waveS = hslider("[9]Wave [style:knob]", 0, 0, ma.PI/2, 0.001):si.smoo;
+            sinS = max(cos(waveS*2),0),0:select2(waveS>ma.PI/3);
+            triS = max(cos((waveS*2-(ma.PI/2))),0),0:select2(waveS>ma.PI/2);
+            squS = max(cos((waveS*2+(ma.PI))),0);
+            triangle(freq) = os.saw1(freq) : abs : (_*2-1);
+        };
+    };
+        pitch = exp(vslider("[1]Pitch [style:knob]", log(50), log(20), log(500), 0.01):si.smoo);
+        pitchDepth = hslider("[2]Pitch Mod Depth [style:knob]", 20, 0, 500, 0.01);
+    
+        noise = no.noise:fi.resonbp(noiseP,1,1)*noiseAmt*(trig:noiseEnv)
+        with{
+            noiseP = exp(vslider("[5]Noise Pitch [style:knob]", log(200), log(100), log(4200), 0.01):si.smoo);
+
+            noiseAmt = hslider("[4]Noise Amount[style:knob]", 0, 0, 5, 0.001) : si.smoo;
+            noiseEnv = en.are(nA,nD)
+            with{
+                nA = 0;
+                nD = vslider("[6]Noise Decay[style:knob]", 0.01, 0, 0.5, 0.01);
+            };
+    };
+};
+
+//Uncomment for standalone mode 
+process = bb93(button("T"):ba.impulsify)<:_,_;
