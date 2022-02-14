@@ -1,0 +1,19 @@
+//-----------------DIST----------------//
+//Simple distortion effect, available for all 8 voices
+//PARAMETERS:
+//  1 - Filter Type : Type of filter (LP, HP, BP ,???)
+//  2 - Cutoff : Filter cutoff
+//  3 - Resonance : Filter resonance
+//  4 - Mix : Filter mix
+/*TODO : find one last interesting parameter and research cubicnl dist*/
+
+import("stdfaust.lib");
+
+filter(type, cutoff, res, mix) = _ <: (_ * (1 - mix)),
+                                      (lp,hp,bp : select3(type) * mix)
+                                      : +
+with{
+  lp = fi.resonlp(cutoff, res, 1);
+  hp = fi.resonhp(cutoff, res, 1);
+  bp = fi.resonbp(cutoff, res,1);
+};

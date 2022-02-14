@@ -1,0 +1,12 @@
+//-----------------DIST----------------//
+//Simple distortion effect, available for all 8 voices
+//PARAMETERS:
+//  1 - Mix : Dry/Wet signal mix
+//  2 - Drive : Distortion factor
+//  3 - Offset : ????
+//  4 - ????
+/*TODO : find one last interesting parameter and research cubicnl dist*/
+
+dist(dist, drive, offset) = _<: _ * (1 - dist),
+                                ef.cubicnl_nodc(drive, offset) * distMix
+                                : +

@@ -1,0 +1,50 @@
+//-----------------MODAL DRUMS----------------//
+//Physical modeling engine consisting of a modal drum, a waveguide transient and
+// a blower exciter
+//PARAMETERS:
+//  1 - Pitch : Drum and transient main pitch
+//  2 - Brightness : Drum modes frequency offset
+//  3 - Transient Level : Transient volume
+//  4 - Transient Position : Transient's strike position
+//  5 - Noise Amount : Cutoff of exciter's noise
+//  6 - Noise Decay : exciter's noise cutoff exponential envelope's decay
+//  7 - Strength : Overall strike/blow strength
+//  8 - TODO : Find one last interesting parameter !
+
+/*TODO : Make the volume proportional to the pitch
+TODO : maybe change the blower behaviour to be more responsive*/
+import("stdfaust.lib");
+import("modaldrums.lib");
+import("volenvUI.dsp");
+import("utilities.dsp");
+
+//the modal drum model
+drum(pitch, brightness) = _ <: par(i,nModes,pm.modeFilter(modeFreqs(i),
+                                  modeT60s(i),modeGains(i)))
+                              :> /(nModes)
+with{
+  nModes = 20;
+  theta = 0;
+  modeFreqs(i) = pitch + brightness*i;
+  modeT60s(i) = (nModes-i)*0.03;
+  modeGains(i) = cos((i+1)*theta)/float(i+1)*(1/(i+1));
+};
+
+//the transient model
+transient(pitch, transientAmt, transientPos) = pm.marimbaModel(pitch/2,transientPos)
+                                              * transientAmt * 2;
+
+//the blower/exciter engine
+blower(strength, noiseAmt, noiseDecay, t) = pm.blower(strength*(t:volEnv)/2,0.5*(t:volEnv),noiseAmt, 5, 0)*(t:noiseEnv)
+with{
+  noiseEnv = en.are(0,noiseDecay);
+};
+
+//the full engine
+md(pitch, brightness,
+    transientAmt, transientPos,
+    noiseAmt, noiseDecay,
+    strength, t) = blower(strength,
+                        noiseAmt, noiseDecay, t)
+                        <: (drum(pitch, brightness)
+                        , transient(pitch, transientAmt, transientPos)):+; 
