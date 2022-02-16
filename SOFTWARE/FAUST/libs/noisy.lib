@@ -1,0 +1,28 @@
+//-----------------NOISY----------------//
+//Filtered noise engine for hats, snares, lasers and bitcrushed percs
+//--------------PARAMETERS:
+//  1 - Pitch : Noise bandpass cutoff
+//  2 - Pitch Amount : Bandpassed noise mix
+//  3 - Pitch Tone : Noise bandpass resonance
+//  4 - Pitch Mod Depth : Noise bandpass cutoff modulation amount
+//  5 - Pitch Decay : Noise bandpass cutoff modulation envelope decay in seconds
+//  6 - Resolution : Sparse noise average frequency of impulses per second
+//  7 - TODO : Find one last interesting parameter !
+//  8 - TODO : Find one last interesting parameter !
+
+import("volenvUI.dsp");
+import("stdfaust.lib");
+import("utilities.lib");
+
+noisy(pitch, pitchAmt, pitchTone,
+    pitchDepth, pitchDecay, resolution, t) = noise(resolution)<:
+                                            ((filtered(pitch, pitchDepth, pitchDecay, pitchTone, t)
+                                            *(pitchAmt*3),
+                                            _*(1-pitchAmt))
+                                            :+) * 5 * (t:volEnv)
+with{
+    noise(resolution)=no.sparse_noise(resolution);
+    filtered(pitch, pitchDepth, pitchDecay, pitchTone, t) = fi.resonbp(cutoff,pitchTone,1);
+    cutoff = min(pitch+pitchDepth*(t:pitchEnv),22000);
+    pitchEnv = en.are(0,pitchDecay);
+};
