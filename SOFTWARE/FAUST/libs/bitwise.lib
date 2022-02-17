@@ -7,38 +7,35 @@
 //  4 - Modulator Offset : Modulator osc offset from main pitch
 //  5 - Modulator Pitch Mod Depth : Modulator osc pitch modulation amount
 //  6 - Modulator Pitch Mod Decay : Modulator osc pitch modulation exponential envelope decay in seconds
-//  7 - Clipping : Main osc square wave mix
-//  8 - Clipping PMW : Main osc square wave PMW
+//  7 - PMW1 : Main osc square wave PMW
+//  8 - PMW2 : Modulator osc offset
 
 import("stdfaust.lib");
-import("volenv.dsp");
-import("utilities.dsp");
+import("volenvUI.dsp");
+import("utilities.lib");
 
 //bitwise's first osc with clipping amount and pwm
-osc1(pitch, pwm, clipping, pitchDepth, pitchDecay, t) = (os.osc(freq1)*(1-clipping),
-                                                      os.pulsetrain(freq1, pwm)
-                                                      * clipping)
-                                                      : +
+osc1(pitch, pwm1, pitchDepth, pitchDecay, t) = os.pulsetrain(freq1,pwm1)
 with{
   freq1 = pitch + (t:pitchEnv)*pitchDepth;
   pitchEnv = en.are(0,pitchDecay);
 };
 
 //bitwise's second osc
-osc2(pitch, offset, offsetDepth, offsetDecay, t) = os.osc(freq2)
+osc2(pitch, pwm2, offset, offsetDepth, offsetDecay, t) = os.pulsetrain(freq2,pwm2)
 with{
   freq2 = pitch+offset+((t):offsetEnv*offsetDepth);
   offsetEnv = en.are(0,offsetDecay);
 };
 
 //bitwise's full engine
-/*NOTE : to smooth or not to smooth ???*/
+//NOTE : to smooth or not to smooth ???
 bitwise(pitch, pitchDepth, pitchDecay,
         offset, offsetDepth, offsetDecay,
-        clipping, pwm, t) = ((compare >= maxOsc)-0.5) : * (t:volEnv)
+        pwm1, pwm2, t) = ((compare >= maxOsc)-0.5) : * (t:volEnv)
 with{
-  compare = (osc1(pitch, pwm, clipping, pitchDepth, pitchDecay, t),
-            osc2(pitch, offset, offsetDepth, offsetDecay, t)) <: &;
-  maxOsc = max(osc1(pitch, pwm, clipping, pitchDepth, pitchDecay, t),
-                osc2(pitch, offset, offsetDepth, offsetDecay, t));
+  compare = (osc1(pitch, pwm1, pitchDepth, pitchDecay, t),
+            osc2(pitch, pwm2, offset, offsetDepth, offsetDecay, t)) <: &;
+  maxOsc = max(osc1(pitch, pwm1, pitchDepth, pitchDecay, t),
+                osc2(pitch, pwm2, offset, offsetDepth, offsetDecay, t));
 };
