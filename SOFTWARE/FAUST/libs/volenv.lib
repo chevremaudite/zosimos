@@ -1,0 +1,82 @@
+//-----------------ENVELOPE----------------//
+//Simple distortion effect, available for all 8 voices
+//PARAMETERS:
+//  1 - Attack : envelope attack
+//  2 - Release : envelope release
+//  3 - Curve : curve type (linear to exponential)
+/*  4 - TODO : hold or individual curve???*/
+
+
+import("stdfaust.lib");
+
+// Volume envelope with interpolation
+volenv(at, rt, curve, gate) = (linenv,expenv) : si.interpolate(curve)
+with {
+    linenv = ar(at,rt,gate);
+    expenv = are(at/6.67,rt/6.67,gate);
+};
+
+
+// Linear volume envelope
+ar(at,rt,gate) = AR : max(0)
+with {
+
+    // Durations in samples
+    an = max(1, at*ma.SR);
+    rn = max(1, rt*ma.SR);
+
+    // Deltas per samples
+    adelta = 1/an;
+    rdelta = 1/rn;
+
+    // Attack time (starts at gate upfront and raises infinitely)
+    atime = (raise * reset + upfront) ~ _
+    with {
+        upfront = gate > gate';
+        reset = gate <= gate';
+        raise(x) = (x + (x > 0));
+    };
+
+    // Attack curve
+    A = atime * adelta;
+
+    // Release curve
+    D0 = 1 + an * rdelta;
+    D = D0 - atime * rdelta;
+
+    // AR part
+    AR = min(A, D);
+
+};
+
+// Exponential volume envelope
+are(at,rt,gate) = AR : max(0)
+with {
+
+    // Durations in samples
+    an = max(1, at*ma.SR);
+    rn = max(1, rt*ma.SR);
+
+    // Deltas per samples
+    adelta = 1/an;
+    rdelta = 1/rn;
+
+    // Attack time (starts at gate upfront and raises infinitely)
+    atime = (raise*reset + upfront) ~ _
+    with {
+        upfront = gate > gate';
+        reset = gate <= gate';
+        raise(x) = (x' + (exp(x > 0)-1));
+    };
+    // Attack curve
+    A = atime * adelta;
+
+    // Release curve
+    D0 = 1 + an * rdelta;
+    D = blocked;
+    og = exp(D0 - atime * rdelta);
+    blocked = (0,og) : select2(og>0.05);
+    // AR part
+    AR = min(A, D);
+
+};
