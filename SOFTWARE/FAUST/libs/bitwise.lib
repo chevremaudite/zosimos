@@ -13,16 +13,17 @@
 import("stdfaust.lib");
 import("volenvUI.dsp");
 import("utilities.lib");
+wt = library("wavetables.lib");
 
 //bitwise's first osc with clipping amount and pwm
-osc1(pitch, pwm1, pitchDepth, pitchDecay, t) = os.pulsetrain(freq1,pwm1)
+osc1(pitch, pwm1, pitchDepth, pitchDecay, t) = wt.squarePWM(freq1,pwm1,t)
 with{
   freq1 = pitch + (t:pitchEnv)*pitchDepth;
   pitchEnv = en.are(0,pitchDecay);
 };
 
 //bitwise's second osc
-osc2(pitch, pwm2, offset, offsetDepth, offsetDecay, t) = os.pulsetrain(freq2,pwm2)
+osc2(pitch, pwm2, offset, offsetDepth, offsetDecay, t) = wt.squarePWM(freq2,pwm2,t)
 with{
   freq2 = pitch+offset+((t):offsetEnv*offsetDepth);
   offsetEnv = en.are(0,offsetDecay);
