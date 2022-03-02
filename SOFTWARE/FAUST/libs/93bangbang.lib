@@ -11,7 +11,7 @@
 //  8 - ????
 /*TODO : Find one last interesting parameter !*/
 
-//import("stdfaust.lib");
+import("stdfaust.lib");
 import("volenvUI.dsp");
 
 ut = library("utilities.lib");
@@ -21,7 +21,7 @@ wt = library("wavetables.lib");
 //93 bang bang's carrier and pitch modulation
 bb93_carrier(pitch, pitchDepth, pitchDecay, waveS, t) = wave(pitch+pitchDepth*(t:pitchEnv))
 with{
-  wave(f) = wt.sine(f, t)*sinS, wt.triangle(f,t)*triS, wt.square(f, t)*squS:> _;
+  wave(f) = wt.sine(f,t)*sinS, wt.triangle(f,t)*triS, wt.square(f,t)*squS:> _;
   sinS = max(cos(waveS*2),0),0:select2(waveS>ma.PI/3);
   triS = max(cos((waveS*2-(ma.PI/2))),0),0:select2(waveS>ma.PI/2);
   squS = max(cos((waveS*2+(ma.PI))),0);
