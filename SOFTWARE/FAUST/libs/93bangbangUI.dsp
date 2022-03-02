@@ -12,12 +12,13 @@
 
 import("stdfaust.lib");
 import("93bangbang.lib");
-import("utilities.dsp");
+
+ut = library("utilities.dsp");
 
 
 process = hgroup("93 Bang Bang", bb93(pitch, pitchDepth, pitchDecay,
                                     noiseAmt, noisePitch, noiseDecay,
-                                    waveS, trigger) : drumSmooth)<:_,_
+                                    waveS, trigger) <:_,_
 with {
     trigger = button("T"):ba.impulsify;
     pitch = exp(vslider("[1]Pitch [style:knob]", log(50), log(20), log(500), 0.01) : si.smoo);

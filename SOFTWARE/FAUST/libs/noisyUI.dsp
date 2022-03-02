@@ -16,13 +16,13 @@ import("utilities.lib");
 import("noisy.lib");
 
 process = hgroup("Noisy", noisy(pitch, pitchAmt, pitchTone,
-                        pitchDepth, pitchDecay, resolution, trigger)):drumSmooth<:_,_
+                        pitchDepth, pitchDecay, resolution, trigger))<:_,_
 with{
     trigger = button("T"):ba.impulsify;
     pitch = exp(vslider("[1]Pitch [style:knob]", log(200), log(20), log(20000), 0.01):si.smoo);
-    pitchAmt = hslider("[2]Pitch Amount [style:knob]", 0.5, 0, 1, 0.001); 
+    pitchAmt = hslider("[2]Pitch Amount [style:knob]", 0.5, 0, 1, 0.001);
     pitchTone = vslider("[3]Pitch Tone[style:knob]", 1,1,10,0.01):si.smoo;
-    pitchDepth = hslider("[4]Pitch Mod Depth[style:knob]", 20, 0, 10000, 0.01); 
+    pitchDepth = hslider("[4]Pitch Mod Depth[style:knob]", 20, 0, 10000, 0.01);
     pitchDecay = vslider("[5]Pitch Decay[style:knob]", 0.01, 0, 1, 0.01);
     resolution = exp(hslider("[9]Resolution [style:knob]", log(1000), log(200), log(20000), 0.001)
                                                             :si.smoo);

@@ -18,7 +18,7 @@ import("utilities.dsp");
 process = hgroup("Modal Drums", md(pitch, brightness,
                                 transientAmt, transientPos,
                                 noiseAmt, noiseDecay,
-                                strength, trigger):drumSmooth)<:_,_
+                                strength, trigger))<:_,_
 with{
   trigger = button("T"):ba.impulsify;
   pitch = exp(vslider("[1]Pitch [style:knob]", log(420), log(100), log(4200), 0.01) : si.smoo);
