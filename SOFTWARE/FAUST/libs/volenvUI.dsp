@@ -1,10 +1,11 @@
 //-----------------ENVELOPE----------------//
-//Simple distortion effect, available for all 8 voices
+//Simple volume envelope with attack, release and a release curve control.
 //PARAMETERS:
 //  1 - Attack : envelope attack
 //  2 - Release : envelope release
-//  3 - Curve : curve type (linear to exponential)
-/*  4 - TODO : hold or individual curve???*/
+//  3 - Curve : curve type (linear to exponential) for attack and release
+/*  4 - TODO : hold*/
+
 no = import("noises.lib");
 ve = library("volenv.lib");
 

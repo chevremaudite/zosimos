@@ -1,23 +1,20 @@
 //-----------------ENVELOPE----------------//
-//Simple distortion effect, available for all 8 voices
+//Simple volume envelope with attack, release and a release curve control.
 //PARAMETERS:
 //  1 - Attack : envelope attack
 //  2 - Release : envelope release
-//  3 - Curve : curve type (linear to exponential)
-/*  4 - TODO : hold or individual curve???*/
+//  3 - Curve : curve type (linear to exponential) for attack and release
+/*  4 - TODO : hold*/
 
 
 import("stdfaust.lib");
 
-// Volume envelope with interpolation
 volenv(at, rt, curve, gate) = (linenv,expenv) : si.interpolate(curve)
 with {
     linenv = ar(at,rt,gate);
-    expenv = are(at/6.67,rt/6.67,gate);
+    expenv = are(at,rt/6.67,gate);
 };
 
-
-// Linear volume envelope
 ar(at,rt,gate) = AR : max(0)
 with {
 
@@ -49,7 +46,6 @@ with {
 
 };
 
-// Exponential volume envelope
 are(at,rt,gate) = AR : max(0)
 with {
 
@@ -66,16 +62,17 @@ with {
     with {
         upfront = gate > gate';
         reset = gate <= gate';
-        raise(x) = (x' + (exp(x > 0)-1));
+        raise(x) = (x' + (exp(x > 0)));
     };
     // Attack curve
     A = atime * adelta;
 
     // Release curve
     D0 = 1 + an * rdelta;
-    D = blocked;
-    og = exp(D0 - atime * rdelta);
-    blocked = (0,og) : select2(og>0.05);
+    D = exp(D0 - atime * rdelta);
+    // Old :
+    // Dblocked = (0,D) : select2(og>0.05);
+
     // AR part
     AR = min(A, D);
 
