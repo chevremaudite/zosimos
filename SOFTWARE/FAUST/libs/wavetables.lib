@@ -1,0 +1,21 @@
+import("stdfaust.lib");
+
+//misc
+twopi = 2.0 * ma.PI;
+
+//tablesize
+ts = 1<<16;
+
+//Wavetable oscillators with phase sync
+
+//Triangle
+triangle(f, t) = 2.0*abs(2.0 * os.lf_sawpos_reset(f,t)-1)-1;
+
+//Sine
+sine(f, t) = os.hs_osccos(f,t);
+
+//Square
+square(f, t) = os.hs_osccos(f,t) : ma.signum;
+
+//Saw
+saw(f,t) = os.hs_phasor(ts,f,t);
