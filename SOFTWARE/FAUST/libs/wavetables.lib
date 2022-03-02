@@ -6,7 +6,7 @@ twopi = 2.0 * ma.PI;
 //tablesize
 ts = 1<<16;
 
-//Wavetable oscillators with phase sync
+//-------------Wavetable oscillators with phase sync-------------//
 
 //Triangle
 triangle(f, t) = 2.0*abs(2.0 * os.lf_sawpos_reset(f,t)-1)-1;
@@ -16,6 +16,8 @@ sine(f, t) = os.hs_osccos(f,t);
 
 //Square
 square(f, t) = os.hs_osccos(f,t) : ma.signum;
+//PWM version
+squarePWM(f, pw, t) = (os.lf_sawpos_reset(f,t)>pw);
 
 //Saw
-saw(f,t) = os.hs_phasor(ts,f,t);
+saw(f,t) = os.lf_sawpos_reset(f,t);
