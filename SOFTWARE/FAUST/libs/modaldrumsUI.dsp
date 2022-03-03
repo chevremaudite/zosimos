@@ -1,6 +1,6 @@
 //-----------------MODAL DRUMS----------------//
 //Physical modeling engine consisting of a modal drum, a waveguide transient and a blower exciter
-//PARAMETERS:
+//--------------PARAMETERS:
 //  1 - Pitch : Drum and transient main pitch
 //  2 - Brightness : Drum modes frequency offset
 //  3 - Transient Level : Transient volume
