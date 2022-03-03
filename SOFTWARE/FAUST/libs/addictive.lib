@@ -1,0 +1,28 @@
+//-----------------ADDICTIVE----------------//
+//Classic Virtual analog kick and tom generator
+//--------------PARAMETERS:
+//  1 - Pitch : Main osc pitch
+//  2 - Interval : Partial interval from main pitch and to each other
+//  3 - Oddness : Odd partials strength
+//  4 - Harms : Partial number
+//  5 - ????
+//  6 - ????
+//  7 - ????
+//  8 - ????
+
+
+import("stdfaust.lib");
+import("filter.lib");
+import("volenvUI.dsp");
+import("addictive.lib");
+wt = library("wavetables.lib");
+
+add(pitch, harms, interval, oddness, offset, trig) = addition * (trig:volEnv)
+with{
+    maxFreqs = 20;
+    addition = par(i, maxFreqs, wt.sine(modeFreq(i)) * modeGain(i), trig) :> _;
+    modeFreq(i) = pitch * ba.take(i+1, ratioList);
+    modeGain(i) = ba.take(i+1, gainList);
+    ratioList = ba.subseq((par(i, maxFreqs, (1+i*interval+offset))), 0, harms);
+    gainList = par(i, maxFreqs, ((i+1)%2)/(i+1) + (i%2)*oddness);
+};
