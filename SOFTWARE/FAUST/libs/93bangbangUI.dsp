@@ -1,13 +1,13 @@
 //-----------------93 BANG BANG----------------//
 //Classic Virtual analog kick and tom generator
-//PARAMETERS:
+//--------------PARAMETERS:
 //  1 - Pitch : Main osc pitch
 //  2 - Pitch Mod Depth : Main osc pitch modulation amount
 //  3 - Pitch Decay : Main osc pitch modulation envelope decay in seconds
 //  4 - Noise Amount : Noise transient volume
 //  5 - Noise Pitch : Noise transient's bandpass frequency
 //  6 - Noise Decay : Noise transient envelope decay in seconds
-//  7 - Wave : Main osc waveform going from sine to *almost* square with wavemorphing
+//  7 - Wave : Main osc waveform going from sine to square with wavemorphing
 //  8 - ????
 
 import("stdfaust.lib");

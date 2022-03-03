@@ -1,6 +1,6 @@
 //-----------------BITWISE----------------//
 //Bitwise operations based engine for hard kicks and digital weird percs
-//PARAMETERS:
+//--------------PARAMETERS:
 //  1 - Pitch : Main osc pitch
 //  2 - Pitch Mod Depth : Main osc pitch modulation amount
 //  3 - Pitch Decay : Main osc pitch modulation exponential envelope decay in seconds

@@ -1,6 +1,6 @@
 //-----------------FILTER----------------//
 //Multimode resonant filter, available for all 8 voices
-//PARAMETERS:
+//--------------PARAMETERS:
 //  1 - Filter Type : Type of filter (LP, HP, BP ,???)
 //  2 - Cutoff : Filter cutoff
 //  3 - Resonance : Filter resonance

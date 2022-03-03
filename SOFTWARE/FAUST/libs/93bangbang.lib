@@ -1,15 +1,46 @@
 //-----------------93 BANG BANG----------------//
 //Classic virtual analog kick and tom generator
-//PARAMETERS:
+//--------------PARAMETERS:
 //  1 - Pitch : Main osc pitch
 //  2 - Pitch Mod Depth : Main osc pitch modulation amount
 //  3 - Pitch Decay : Main osc pitch modulation envelope decay in seconds
 //  4 - Noise Amount : Noise transient volume
 //  5 - Noise Pitch : Noise transient's bandpass frequency
 //  6 - Noise Decay : Noise transient envelope decay in seconds
-//  7 - Wave : Main osc waveform going from sine to *almost* square with wavemorphing
+//  7 - Wave : Main osc waveform going from sine to square with wavemorphing
 //  8 - ????
 /*TODO : Find one last interesting parameter !*/
+
+import("stdfaust.lib");
+import("volenvUI.dsp");
+
+ut = library("utilities.lib");
+wt = library("wavetables.lib");
+
+
+//93 bang bang's carrier and pitch modulation
+bb93_carrier(pitch, pitchDepth, pitchDecay, waveS, t) = wave(pitch+pitchDepth*(t:pitchEnv))
+with{
+  wave(f) = wt.sine(f,t)*sinS, wt.triangle(f,t)*triS, wt.square(f,t)*squS:> _;
+  sinS = max(cos(waveS*2),0),0:select2(waveS>ma.PI/3);
+  triS = max(cos((waveS*2-(ma.PI/2))),0),0:select2(waveS>ma.PI/2);
+  squS = max(cos((waveS*2+(ma.PI))),0);
+  pitchEnv = en.are(0, pitchDecay);
+};
+
+//93 bang bang's noise engine
+bb93_noise(noiseAmt, noisePitch, noiseDecay, t) = filtered_noise(noisePitch)
+                                              * (t:noiseEnv) * noiseAmt
+with {
+  filtered_noise(p) = no.noise : fi.resonbp(p,1,1);
+  noiseEnv = en.are(0,noiseDecay);
+};
+
+//93 bang bang's full engine
+bb93(pitch, pitchDepth, pitchDecay,
+    noiseAmt, noisePitch, noiseDecay,
+    waveS, t) = (bb93_carrier(pitch, pitchDepth, pitchDecay, waveS, t) +
+                bb93_noise(noiseAmt, noisePitch, noiseDecay, t)) * (t:volEnv);
 
 import("stdfaust.lib");
 import("volenvUI.dsp");
