@@ -1,1 +1,7 @@
 import("stdfaust.lib");
+
+//Holds imput trigger for n samples
+holdN(n, t) = (t : countup < n)
+with{
+    countup(t)= +(1) ~ *(t != 1);
+};
