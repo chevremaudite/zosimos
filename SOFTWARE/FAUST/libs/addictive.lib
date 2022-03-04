@@ -20,7 +20,7 @@ wt = library("wavetables.lib");
 add(pitch, harms, interval, oddness, offset, trig) = addition * (trig:volEnv)
 with{
     maxFreqs = 20;
-    addition = par(i, maxFreqs, wt.sine(modeFreq(i)) * modeGain(i), trig) :> _;
+    addition = par(i, maxFreqs, wt.hssine(modeFreq(i)) * modeGain(i), trig) :> _;
     modeFreq(i) = pitch * ba.take(i+1, ratioList);
     modeGain(i) = ba.take(i+1, gainList);
     ratioList = ba.subseq((par(i, maxFreqs, (1+i*interval+offset))), 0, harms);

@@ -1,6 +1,8 @@
 import("stdfaust.lib");
 
-//misc
+//-------------Useful constants-------------//
+
+//two PI
 twopi = 2.0 * ma.PI;
 
 //tablesize
