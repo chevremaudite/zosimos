@@ -1,20 +1,90 @@
 //-----------------ENVELOPE----------------//
 //Simple volume envelope with attack, release and a release curve control.
 //--------------PARAMETERS:
-//  1 - Attack : envelope attack
-//  2 - Release : envelope release
-//  3 - Curve : curve type (linear to exponential) for attack and release
-/*  4 - TODO : hold*/
-
+//  1 - Attack : envelope attack (in seconds)
+//  2 - Release : envelope release (in seconds)
+//  3 - Hold : envelope hold (in seconds)
+//  4 - Curve : curve type (linear to exponential) for attack and release
 
 import("stdfaust.lib");
+import("utilities.lib");
 
-volenv(at, rt, curve, gate) = (linenv,expenv) : si.interpolate(curve)
+volenv(at, ht, rt, curve, gate) = (linenv,expenv) : si.interpolate(curve)
 with {
-    linenv = ar(at,rt,gate);
-    expenv = are(at,rt,gate);
+    linenv = ahr(at, ht, rt, gate);
+    expenv = ahre(at, ht, rt, gate);
 };
 
+// Linear AHR envelope
+ahr(at, ht, rt, trig) = AS - R : max(0) : min(1)
+with {
+    hgate = trig : holdN(hn);
+    // Durations in samples
+    an = max(1, at*ma.SR);
+    rn = max(1, rt*ma.SR);
+    hn = max(1, ht*ma.SR);
+
+    // Deltas per samples
+    adelta = 1/an;
+    rdelta = 1/rn;
+
+    atime = (raise * reset + upfront)  ~ _
+    with {
+        upfront = trig > trig';
+        reset = trig <= trig';
+        raise(x) = (x + (x>0));
+    };
+
+    // Attack curve
+    A = atime * adelta;
+
+    // AS part
+    AS = min(A, 1);
+
+    // Release time starts when the delayed gate is at 0
+    rtime = (+(1) : *(hgate == 0)) ~ _;
+
+    // Release curve starts when the delayed gate is 0 with the current value of the envelope
+    R = rtime * rdelta;
+
+};
+
+// Exponential AHR envelope
+ahre(at, ht, rt, trig) = AS - R : max(0) : min(1)
+with {
+    hgate = trig : holdN(hn);
+    // Durations in samples
+    an = max(1, at*ma.SR);
+    rn = max(1, rt*ma.SR);
+    hn = max(1, ht*ma.SR);
+
+    // Deltas per samples
+    adelta = 1/an;
+    rdelta = 1/rn;
+
+    atime = (raise * reset + upfront)  ~ _
+    with {
+        upfront = trig > trig';
+        reset = trig <= trig';
+        raise(x) = (x + (exp(x>0)));
+    };
+
+    // Attack curve
+    A = atime * adelta;
+
+    // AS part
+    AS = min(A, 1);
+
+    // Release time starts when gate is 0
+    rtime = (+(1) : *(hgate == 0)) ~ _;
+
+    // Release curve starts when gate is 0 with the current value of the envelope
+    R = rtime * rdelta;
+
+};
+
+
+// Linear AR envelope
 ar(at,rt,gate) = AR : max(0)
 with {
 
@@ -46,6 +116,7 @@ with {
 
 };
 
+// Exponential AR envelope
 are(at,rt,gate) = AR : max(0)
 with {
 
