@@ -22,5 +22,5 @@ with {
     harms = hslider("[2]Harmonics [style:knob]", 20, 0, 500, 1) : si.smoo;
     interval = vslider("[3]Interval [style:knob]", 0, 0, 1, 0.001) : si.smoo;
     oddness = hslider("[4]Oddness [style:knob]", 0, 0, 1, 0.001) : si.smoo;
-    offset = vslider("[5]Offset [style:knob]", 10, 0, 50, 0.001) : si.smoo;
+    offset = vslider("[5]Offset [style:knob]", 10, -50, 50, 0.001) : si.smoo;
 };
