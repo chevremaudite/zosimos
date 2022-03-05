@@ -13,7 +13,7 @@
 import("stdfaust.lib");
 import("modaldrums.lib");
 import("volenvUI.dsp");
-import("utilities.dsp");
+import("utilities.lib");
 
 process = hgroup("Modal Drums", md(pitch, brightness,
                                 transientAmt, transientPos,
