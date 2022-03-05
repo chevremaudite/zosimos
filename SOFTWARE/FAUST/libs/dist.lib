@@ -7,6 +7,6 @@
 //  4 - ????
 /*TODO : find one last interesting parameter and research cubicnl dist*/
 
-dist(dist, drive, offset) = _<: _ * (1 - dist),
-                                ef.cubicnl_nodc(drive, offset) * distMix
-                                : +
+dist(mix, drive, offset) = _<: _ * (1 - mix),
+                                ef.cubicnl_nodc(drive, offset) * mix
+                                : +;
