@@ -20,7 +20,7 @@ with {
     trigger = button("T"):ba.impulsify;
     pitch = exp(vslider("[1]Pitch [style:knob]", log(50), log(20), log(500), 0.01) : si.smoo);
     pitchDepth = hslider("[2]Pitch Mod Depth [style:knob]", 20, 0, 500, 0.01) : si.smoo;
-    pitchDecay = vslider("[3]Pitch Decay[style:knob]", 0.01, 0, 0.2, 0.01);
+    pitchDecay = vslider("[3]Pitch Decay[style:knob]", 0.01, 0, 0.5, 0.01);
     noiseAmt = hslider("[4]Noise Amount[style:knob]", 0, 0, 5, 0.001) : si.smoo;
     noisePitch = exp(vslider("[5]Noise Pitch [style:knob]", log(200), log(100), log(4200), 0.01) : si.smoo);
     noiseDecay = vslider("[6]Noise Decay[style:knob]", 0.01, 0, 0.5, 0.01);
