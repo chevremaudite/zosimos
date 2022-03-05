@@ -1,10 +1,11 @@
 //-----------------ENVELOPE----------------//
 //Simple volume envelope with attack, release and a release curve control.
 //--------------PARAMETERS:
-//  1 - Attack : envelope attack (in seconds)
-//  2 - Release : envelope release (in seconds)
-//  3 - Hold : envelope hold (in seconds)
+//  1 - Attack : envelope attack time
+//  2 - Release : envelope release time
+//  3 - Hold : envelope hold time
 //  4 - Curve : curve type (linear to exponential) for attack and release
+
 
 import("stdfaust.lib");
 import("utilities.lib");
@@ -16,7 +17,7 @@ with {
 };
 
 // Linear AHR envelope
-ahr(at, ht, rt, trig) = AS - R : max(0) : min(1)
+ahr(at, ht, rt, trig) = AS - R : max(0)
 with {
     hgate = trig : holdN(hn);
     // Durations in samples
@@ -27,6 +28,8 @@ with {
     // Deltas per samples
     adelta = 1/an;
     rdelta = 1/rn;
+
+    // Attack time (starts at gate upfront and raises infinitely)
 
     atime = (raise * reset + upfront)  ~ _
     with {
@@ -50,7 +53,7 @@ with {
 };
 
 // Exponential AHR envelope
-ahre(at, ht, rt, trig) = AS - R : max(0) : min(1)
+ahre(at, ht, rt, trig) = AS - R : max(0)
 with {
     hgate = trig : holdN(hn);
     // Durations in samples
@@ -62,6 +65,7 @@ with {
     adelta = 1/an;
     rdelta = 1/rn;
 
+    // Attack time (starts at gate upfront and raises infinitely)
     atime = (raise * reset + upfront)  ~ _
     with {
         upfront = trig > trig';
@@ -76,7 +80,7 @@ with {
     AS = min(A, 1);
 
     // Release time starts when gate is 0
-    rtime = (+(1) : *(hgate == 0)) ~ _;
+    rtime = (+(exp(1)) : *(hgate == 0)) ~ _;
 
     // Release curve starts when gate is 0 with the current value of the envelope
     R = rtime * rdelta;
@@ -84,7 +88,8 @@ with {
 };
 
 
-// Linear AR envelope
+//old versions without hold control
+
 ar(at,rt,gate) = AR : max(0)
 with {
 
@@ -116,7 +121,6 @@ with {
 
 };
 
-// Exponential AR envelope
 are(at,rt,gate) = AR : max(0)
 with {
 

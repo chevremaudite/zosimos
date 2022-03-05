@@ -1,9 +1,9 @@
 //-----------------ENVELOPE----------------//
 //Simple volume envelope with attack, release and a release curve control.
 //--------------PARAMETERS:
-//  1 - Attack : envelope attack
-//  2 - Release : envelope release
-//  3 - Hold : envelope hold (in seconds)
+//  1 - Attack : envelope attack time
+//  2 - Release : envelope release time
+//  3 - Hold : envelope hold time
 //  4 - Curve : curve type (linear to exponential) for attack and release
 
 no = library("noises.lib");
