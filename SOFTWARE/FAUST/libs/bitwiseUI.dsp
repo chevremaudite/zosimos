@@ -17,7 +17,7 @@ import("bitwise.lib");
 
 process = hgroup("Bitwise", bitwise(pitch, pitchDepth, pitchDecay,
                                     offset, offsetDepth, offsetDecay,
-                                    pwm1, pwm2, trigger))<:_,_
+                                    pwm1, pwm2, trigger)*2)<:_,_
 with{
   trigger = button("T"):ba.impulsify;
   pitch = exp(vslider("[1]Pitch [style:knob]", log(420), log(20), log(2000), 0.01)
