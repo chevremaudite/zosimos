@@ -7,6 +7,7 @@
 //  4 - Mix : Filter mix
 
 import("stdfaust.lib");
+import("filter.lib");
 
 process = filter(type, cutoff, res, mix)
 with{
