@@ -16,21 +16,20 @@ import("utilities.lib");
 wt = library("wavetables.lib");
 
 //bitwise's first osc with clipping amount and pwm
-osc1(pitch, pwm1, pitchDepth, pitchDecay, t) = wt.squarePWM(freq1,pwm1,t)
+osc1(pitch, pwm1, pitchDepth, pitchDecay, t) = wt.hssquarePWM(freq1,pwm1,t)
 with{
   freq1 = pitch + (t:pitchEnv)*pitchDepth;
   pitchEnv = en.are(0,pitchDecay);
 };
 
 //bitwise's second osc
-osc2(pitch, pwm2, offset, offsetDepth, offsetDecay, t) = wt.squarePWM(freq2,pwm2,t)
+osc2(pitch, pwm2, offset, offsetDepth, offsetDecay, t) = wt.hssquarePWM(freq2,pwm2,t)
 with{
   freq2 = pitch+offset+((t):offsetEnv*offsetDepth);
   offsetEnv = en.are(0,offsetDecay);
 };
 
 //bitwise's full engine
-//NOTE : to smooth or not to smooth ???
 bitwise(pitch, pitchDepth, pitchDecay,
         offset, offsetDepth, offsetDecay,
         pwm1, pwm2, t) = ((compare >= maxOsc)-0.5) : * (t:volEnv)
