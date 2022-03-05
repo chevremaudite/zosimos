@@ -8,7 +8,7 @@
 //  4 - Transient Position : Transient's strike position
 //  5 - Noise Amount : Cutoff of exciter's noise
 //  6 - Noise Decay : exciter's noise cutoff exponential envelope's decay
-//  7 - Strength : Overall strike/blow strength
+//  7 - Strength : Overall strike/blow strength /*NOTE : not very useful!*/
 //  8 - TODO : Find one last interesting parameter !
 
 /*TODO : Make the volume proportional to the pitch
@@ -16,7 +16,6 @@ TODO : maybe change the blower behaviour to be more responsive*/
 import("stdfaust.lib");
 import("modaldrums.lib");
 import("volenvUI.dsp");
-import("utilities.dsp");
 
 //the modal drum model
 drum(pitch, brightness) = _ <: par(i,nModes,pm.modeFilter(modeFreqs(i),
