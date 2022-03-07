@@ -1,28 +1,39 @@
 //-----------------ADDICTIVE----------------//
-//Classic Virtual analog kick and tom generator
+// Additive synthesis engine.
 //--------------PARAMETERS:
-//  1 - Pitch : Main osc pitch
-//  2 - Interval : Partial interval from main pitch and to each other
-//  3 - Oddness : Odd partials strength
-//  4 - Harms : Partial number
-//  5 - ????
-//  6 - ????
-//  7 - ????
-//  8 - ????
+//  1 - Pitch : Main pitch
+//  2 - Fundamental Gain : Fundamental frequency's level
+//  3 - Harmonics : Number of partials
+//  4 - Interval : Partial interval from main pitch and to each other
+//  5 - Offset : Nth partial offset from n*f
+//  6 - Oddness : Odd partials strength
+//  7 - High Gain : Higher partials gain
+//  8 - Harmonics Decay : Harmonics exponential envelope decay
 
 
 import("stdfaust.lib");
 import("filter.lib");
 import("volenvUI.dsp");
 import("addictive.lib");
+vol = library("volenv.lib");
 wt = library("wavetables.lib");
 
-add(pitch, harms, interval, oddness, offset, trig) = addition * (trig:volEnv)
+add(pitch, fGain,
+    harms, interval, offset,
+    oddness, highGain, harmDecay,
+    trig) = (fundamental * fGain + addition / 2) * (trig:volEnv)
 with{
-    maxFreqs = 20;
-    addition = par(i, maxFreqs, wt.hssine(modeFreq(i)) * modeGain(i), trig) :> _;
+    maxFreqs = 32;
+    addition = par(i, maxFreqs,  wt.hssine(modeFreq(i)) * (trig:harmEnv(i)) * modeGain(i)) :> _;
     modeFreq(i) = pitch * ba.take(i+1, ratioList);
     modeGain(i) = ba.take(i+1, gainList);
-    ratioList = ba.subseq((par(i, maxFreqs, (1+i*interval+offset))), 0, harms);
-    gainList = par(i, maxFreqs, ((i+1)%2)/(i+1) + (i%2)*oddness);
+    fundamental = os.osc(pitch);
+    ratioList = (par(i, maxFreqs, (1+i*interval)+offset));
+    gainList = (par(i, maxFreqs, (evenGain(i+1) + oddGain(i+1))
+                                    *(i<=harms)/
+                                    ((1-highGain)*maxFreqs/(i+1))));
+    evenGain(i) = (i+1)%2;
+    oddGain(i) = (i%2)*oddness;
+    harmEnv(i) = en.are(0, harmDecay);
+
 };
