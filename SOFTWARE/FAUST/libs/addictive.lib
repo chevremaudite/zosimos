@@ -15,13 +15,14 @@ import("stdfaust.lib");
 import("filter.lib");
 import("volenvUI.dsp");
 import("addictive.lib");
+import("utilities.lib");
 vol = library("volenv.lib");
 wt = library("wavetables.lib");
 
 add(pitch, fGain,
     harms, interval, offset,
     oddness, highGain, harmDecay,
-    trig) = (fundamental * fGain + addition / 2) * (trig:volEnv)
+    trig) = (fundamental * fGain + addition / 2) * (trig:volEnv) : clickSmooth
 with{
     maxFreqs = 32;
     addition = par(i, maxFreqs,  wt.hssine(modeFreq(i)) * (trig:harmEnv(i)) * modeGain(i)) :> _;
