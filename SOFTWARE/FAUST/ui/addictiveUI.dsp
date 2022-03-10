@@ -14,7 +14,6 @@
 import("stdfaust.lib");
 import("addictive.lib");
 
-ut = library("utilities.dsp");
 
 process = hgroup("Addictive", add(pitch, fGain,
                                 harms, interval, offset,
@@ -23,7 +22,7 @@ process = hgroup("Addictive", add(pitch, fGain,
 with {
     trigger = button("T"):ba.impulsify;
     pitch = exp(vslider("[1]Pitch [style:knob]", log(420), log(100), log(4200), 0.01) : si.smoo);
-    fGain = vslider("[2]Fundamental Gain[style:knob]", 0.01, 0, 1, 0.01);
+    fGain = vslider("[2]Fundamental Level[style:knob]", 0.01, 0, 1, 0.01);
     harms = hslider("[3]Harmonics [style:knob]", 0, 0, 32, 1) : si.smoo;
     interval = vslider("[4]Interval [style:knob]", 0, 0, 1000, 0.001) : si.smoo;
     offset = vslider("[5]Offset [style:knob]", 10, 0, 100, 0.001) : si.smoo;
