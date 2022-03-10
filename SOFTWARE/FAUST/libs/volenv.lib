@@ -13,7 +13,7 @@ import("utilities.lib");
 volenv(at, ht, rt, curve, gate) = (linenv,expenv) : si.interpolate(curve)
 with {
     linenv = ahr(at, ht, rt, gate);
-    expenv = ahre(at * 2, ht, rt * 2, gate);
+    expenv = ahre(at*2, ht, rt*2, gate);
 };
 
 // Linear AHR envelope
@@ -46,7 +46,7 @@ with {
     AS = min(A, 1);
 
     // Release time starts when the delayed gate is at 0
-    rtime = (+(1) : *(hgate == 0)) ~ _;
+    rtime = (+(1) : *((hgate == 0))) ~ _;
 
     // Release curve starts when the delayed gate is 0 with the current value of the envelope
     R = rtime * rdelta;
@@ -70,7 +70,7 @@ with {
     with {
         upfront = trig > trig';
         reset = (trig <= trig');
-        raise(x) = (x + (exp(x'>0)));
+        raise(x) = (x + (exp(1)));
     };
 
     // Attack curve
