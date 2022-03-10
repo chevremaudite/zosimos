@@ -12,19 +12,24 @@
 /*TODO : Find one last interesting parameter !*/
 
 import("stdfaust.lib");
+import("utilities.lib");
 import("volenvUI.dsp");
-
 wt = library("wavetables.lib");
 
 //93 bang bang's carrier and pitch modulation
-bb93_carrier(pitch, pitchDepth, pitchDecay, waveS, t) = wave(pitch+pitchDepth*(t:pitchEnv))
+bb93_carrier(pitch, pitchDepth, pitchDecay, waveS, t) = wave(pitch+
+                                                            pitchDepth*
+                                                            (t:pitchEnv))
 with{
-  wave(f) = wt.hssine(f,t)*sinS, wt.hstriangle(f,t)*triS, wt.hssquare(f,t)*squS:> _;
+  wave(f) = wt.hssine(f,t)*sinS,
+            wt.hstriangle(f,t)*triS,
+            wt.hssquare(f,t)*squS :> _;
   sinS = max(cos(waveS*2),0),0:select2(waveS>ma.PI/3);
   triS = max(cos((waveS*2-(ma.PI/2))),0),0:select2(waveS>ma.PI/2);
   squS = max(cos((waveS*2+(ma.PI))),0);
   pitchEnv = en.are(0, pitchDecay);
 };
+
 
 //93 bang bang's noise engine
 bb93_noise(noiseAmt, noisePitch, noiseDecay, t) = filtered_noise(noisePitch)
@@ -37,6 +42,8 @@ with {
 //93 bang bang's full engine
 bb93(pitch, pitchDepth, pitchDecay,
     noiseAmt, noisePitch, noiseDecay,
-    waveS, t) = (bb93_carrier(pitch, pitchDepth, pitchDecay, waveS, t) +
-                bb93_noise(noiseAmt, noisePitch, noiseDecay, t)) * (t:volEnv);
-
+    waveS, t) = (carrier + noise) * (t:volEnv) : si.smooth(0.8)
+with{
+    noise = bb93_noise(noiseAmt, noisePitch, noiseDecay, t);
+    carrier = bb93_carrier(pitch, pitchDepth, pitchDecay, waveS, t);
+};
