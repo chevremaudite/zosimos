@@ -19,7 +19,7 @@ noisy(pitch, pitchAmt, pitchTone,
                                             ((filtered(pitch, pitchDepth, pitchDecay, pitchTone, t)
                                             *(pitchAmt*3),
                                             _*(1-pitchAmt))
-                                            :+) * 5 * (t:volEnv)
+                                            :+) * 5 * (t:volEnv) : clickSmooth
 with{
     noise(resolution)=no.sparse_noise(resolution);
     filtered(pitch, pitchDepth, pitchDecay, pitchTone, t) = fi.resonbp(cutoff,pitchTone,1);
