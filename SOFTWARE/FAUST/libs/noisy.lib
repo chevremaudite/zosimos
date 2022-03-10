@@ -15,14 +15,15 @@ import("stdfaust.lib");
 import("utilities.lib");
 
 noisy(pitch, pitchAmt, pitchTone,
-    pitchDepth, pitchDecay, resolution, t) = noise(resolution)<:
+    pitchDepth, pitchDecay, resolution, t) = noise(resolution) <:
                                             ((filtered(pitch, pitchDepth, pitchDecay, pitchTone, t)
                                             *(pitchAmt*3),
                                             _*(1-pitchAmt))
-                                            :+) * 5 * (t:volEnv) : clickSmooth
+                                            :+) * (t:volEnv) : clickSmooth
 with{
-    noise(resolution)=no.sparse_noise(resolution);
-    filtered(pitch, pitchDepth, pitchDecay, pitchTone, t) = fi.resonbp(cutoff,pitchTone,1);
+    noise(resolution)=no.sparse_noise(resolution) * log(2+20000/resolution) * 5;
+    filtered(pitch, pitchDepth, pitchDecay, pitchTone, t) = fi.resonbp(cutoff,pitchTone,1) *
+                                                            (1-pitchTone/8);
     cutoff = min(pitch+pitchDepth*(t:pitchEnv),22000);
     pitchEnv = en.are(0,pitchDecay);
 };
