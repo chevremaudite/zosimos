@@ -32,7 +32,7 @@ with{
 //bitwise's full engine
 bitwise(pitch, pitchDepth, pitchDecay,
         offset, offsetDepth, offsetDecay,
-        pwm1, pwm2, t) = ((compare >= maxOsc)-0.5) : * (t:volEnv)
+        pwm1, pwm2, t) = ((compare >= maxOsc)-0.5) : * (t:volEnv) : clickSmooth
 with{
   compare = (osc1(pitch, pwm1, pitchDepth, pitchDecay, t),
             osc2(pitch, pwm2, offset, offsetDepth, offsetDecay, t)) <: &;
