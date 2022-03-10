@@ -13,13 +13,14 @@ import("utilities.lib");
 volenv(at, ht, rt, curve, gate) = (linenv,expenv) : si.interpolate(curve)
 with {
     linenv = ahr(at, ht, rt, gate);
-    expenv = ahre(at, ht, rt, gate);
+    expenv = ahre(at * 2, ht, rt * 2, gate);
 };
 
 // Linear AHR envelope
 ahr(at, ht, rt, trig) = AS - R : max(0)
 with {
     hgate = trig : holdN(hn);
+
     // Durations in samples
     an = max(1, at*ma.SR);
     rn = max(1, rt*ma.SR);
@@ -49,7 +50,6 @@ with {
 
     // Release curve starts when the delayed gate is 0 with the current value of the envelope
     R = rtime * rdelta;
-
 };
 
 // Exponential AHR envelope
@@ -62,27 +62,27 @@ with {
     hn = max(1, ht*ma.SR);
 
     // Deltas per samples
-    adelta = 1/an;
-    rdelta = 1/rn;
+    adelta = 1./an;
+    rdelta = 1./rn;
 
     // Attack time (starts at gate upfront and raises infinitely)
-    atime = (raise * reset + upfront)  ~ _
+    atime = ((raise * reset + upfront)  ~ _)
     with {
         upfront = trig > trig';
-        reset = trig <= trig';
-        raise(x) = (x + (exp(x>0)));
+        reset = (trig <= trig');
+        raise(x) = (x + (exp(x'>0)));
     };
 
     // Attack curve
     A = atime * adelta;
 
     // AS part
-    AS = min(A, 1);
+    AS = min(A, 1.);
 
-    // Release time starts when gate is 0
+    // Release time starts when hold gate is 0
     rtime = (+(exp(1)) : *(hgate == 0)) ~ _;
 
-    // Release curve starts when gate is 0 with the current value of the envelope
+    // Release curve starts when hold gate is 0 with the current value of the envelope
     R = rtime * rdelta;
 
 };
