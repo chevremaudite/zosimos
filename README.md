@@ -11,27 +11,27 @@ Each voice will feature 8 pages :
 - 2 ENG pages for the 8 engine parameters.
 - 1 ENV page for the volume envelope parameters.
 - 1 SMP for the sample parameters.
-- 1 VCF for the filter parameters. 
+- 1 VCF for the filter parameters.
 - 1 FX for the per track effect parameters.
 - 1 Mix page for mixer settings (volume, panning and effect routing).
 - 1 MOD page for the modulation shape, routing etc.
 
-In addition to this, 5 pages will be available for the whole project : 
+In addition to this, 5 pages will be available for the whole project :
 - 4 FX pages for 4 global effects.
 - 1 MIDI page for MIDI project settings.
 
 ## Engines
 
-The drum machine will feature a modular architecture, allowing developers to add their own engines. 
+The drum machine will feature a modular architecture, allowing developers to add their own engines.
 Each engine must have a maximum of eight parameters in order to be compatible with the planned hardware and modulation system.
-For the moment, the planned engines are the following : 
+For the moment, the planned engines are the following :
  - **93 Bang Bang** : an analog style kick synthesizer with variable waveforms and noise transient control. **TO FINISH**
  - **Addictive** : a simple additive drum voice with experimental partial controls. **FINISHED**
  - **Bitwise** : an experimental drum voice based on bitwise operations between two PWM square waves. **FINISHED**
  - **Modal Drums** : a simple physical modeling engine consisting of a modal drum and a waveguide transient excited by noise. **TO FINISH**
  - **Noisy** : a noise based drum voice with noise filtering and noise resolution control. **TO FINISH**
  - **FM wood** : an FM drum voice aimed at producing woody percussion sounds. **TO DO**
- - **FM metal** : an FM drum voice aimed at producing metallic percussion sounds. **TO DO**
+ - **FM metal** : an FM drum voice aimed at producing metallic percussion sounds. **TO FINISH**
  - **Input** : a very simple envelope on incoming source to turn any sound source into a drum voice. **TO FINISH**
 
 More details about each engine can be found in the .lib or .dsp file of the engine.
