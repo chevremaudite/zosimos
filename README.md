@@ -1,6 +1,6 @@
 # zosimos
 Zosimos is an ongoing project for an open source hardware drum synthesizer with swappable engines, an extensive modulation matrix, per track and global effects and an additional per track sample player.  
-It is heavily inspired by Elektron machines such as the Octatrack and MachineDrum, but also Sonic Potion's LXR, Arturia's microfreak or Korg's Electirbe 2.
+It is heavily inspired by Elektron machines such as the Octatrack and MachineDrum, but also Sonic Potion's LXR, Arturia's microfreak or Korg's Electribe and Electribe 2.
 
 *All this information is subject to change in the future as the project is still in a very early stage*  
 
@@ -31,14 +31,14 @@ For the moment, the planned engines are the following :
  - **Modal Drums** : a simple physical modeling engine consisting of a modal drum and a waveguide transient excited by noise. **TO FINISH**
  - **Noisy** : a noise based drum voice with noise filtering and noise resolution control. **TO FINISH**
  - **FM wood** : an FM drum voice aimed at producing woody percussion sounds. **TO DO**
- - **FM metal** : an FM drum voice aimed at producing metallic percussion sounds. **TO FINISH**
- - **Input** : a very simple envelope on incoming source to turn any sound source into a drum voice. **TO FINISH**
+ - **FM metal** : an FM drum voice aimed at producing metallic percussion sounds. **FINISHED**
+ - **Input** : an envelope on incoming audio with feedback control to turn any sound source into a drum voice. **TO FINISH**
 
 More details about each engine can be found in the .lib or .dsp file of the engine.
 
 ## Code
 
-All DSP is coded in FAUST. The effects and engine DSP is found inside the *libs* folder and is instanciated in the *ui* folder for testing on a computer.  
+All DSP is coded in FAUST. The effects and engine DSP is found inside the *libs* folder and is instantiated in the *ui* folder for testing on a computer.  
 FAUST code will be compiled in C++ to run on Teensy, which will take care of MIDI and voice/FX allocation.
 
 ## Hardware
