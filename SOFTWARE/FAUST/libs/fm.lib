@@ -1,0 +1,16 @@
+//-----------------fm.lib----------------//
+//Library containing general functions for all the FM engines.
+
+import("stdfaust.lib");
+
+carrier(f, amt, t, mod) = os.osc(freqLim)
+with{
+    modulation = mod*20000*amt;
+    freqLim = min(f + modulation, 20000);
+};
+
+modulator(f, r, t, mod) = os.osc(freqLim)
+with{
+    modulation = mod*20000;
+    freqLim = min(f*r + modulation, 20000);
+};
