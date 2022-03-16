@@ -15,7 +15,9 @@ import("stdfaust.lib");
 import("utilities.lib");
 import("fmmetal.lib");
 
-process = hgroup("FM Metal", fmmetal(pitch, modAmt, r1, r2, r3, fb, modAtk, modDec, trigger))<:_,_
+process = hgroup("FM Metal", fmmetal(pitch, modAmt, r1, r2, r3, fb,
+                                                    modAtk, modDec,
+                                                    trigger)) <: (_,_)
 with{
     trigger = button("T"):ba.impulsify;
     pitch = exp(vslider("[1]Pitch [style:knob]", log(200), log(20), log(20000), 0.01):si.smoo);

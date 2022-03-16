@@ -16,14 +16,15 @@ volenv = library("volenv.lib");
 import("volenvUI.dsp");
 import("utilities.lib");
 
-fmmetal(pitch, modAmt, r1, r2, r3, fb, modAtk, modDec, t) = (mod1(pitch,r1,fb, t) :
-                                                            mod2(pitch, r2, t)),
-                                                            mod3(pitch, r3, t)
-                                                            :> *(t:modEnv) : fm.carrier(pitch, modAmt, t)
-                                                            * (t:volEnv) : clickSmooth
+fmmetal(pitch, modAmt,
+        r1, r2, r3, fb,
+        modAtk, modDec, t) = (mod1(pitch,r1,fb) : mod2(pitch, r2)),
+                              mod3(pitch, r3)
+                              :> *(t:modEnv) : fm.carrier(pitch, modAmt)
+                              * (t:volEnv) : clickSmooth
 with{
-    mod1(pitch, r1, fb, t) = fm.modulator(pitch, r1, fb, t) : + ~ (fb*_);
-    mod2(pitch, r2, t) = fm.modulator(pitch, r2, t);
-    mod3(pitch, r3, t) = fm.modulator(pitch, r3, t);
-    modEnv = volenv.ar(modAtk,modDec * 2);
+    mod1(pitch, r1, fb) = fm.modulator(pitch, r1, fb) : + ~ (fb*_);
+    mod2(pitch, r2) = fm.modulator(pitch, r2);
+    mod3(pitch, r3) = fm.modulator(pitch, r3);
+    modEnv = volenv.are(modAtk,modDec * 2);
 };

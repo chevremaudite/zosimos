@@ -3,13 +3,15 @@
 
 import("stdfaust.lib");
 
-carrier(f, amt, t, mod) = os.osc(freqLim)
+//General purpose carrier with mod inlet
+carrier(f, amt, mod) = os.osc(freqLim)
 with{
     modulation = mod*20000*amt;
     freqLim = min(f + modulation, 20000);
 };
 
-modulator(f, r, t, mod) = os.osc(freqLim)
+//General purpose carrier with mod inlet for mod chains or feedback
+modulator(f, r, mod) = os.osc(freqLim)
 with{
     modulation = mod*20000;
     freqLim = min(f*r + modulation, 20000);
