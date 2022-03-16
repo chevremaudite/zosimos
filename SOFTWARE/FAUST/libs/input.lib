@@ -1,0 +1,10 @@
+//-----------------INPUT----------------//
+//Simple envelope on audio in to turn any sound source into a drum voice
+//--------------PARAMETERS:
+//  1 - Left Gain : Left input gain
+//  1 - Left Gain : Right input gain
+
+import("volenvUI.dsp");
+import("utilities.lib");
+
+input(lGain, rGain, t) = (_ * lGain * (t:volEnv)) , (_ * rGain * (t:volEnv));
