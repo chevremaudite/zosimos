@@ -32,7 +32,7 @@ For the moment, the planned engines are the following :
  - **Noisy** : a noise based drum voice with noise filtering and noise resolution control. **TO FINISH**
  - **FM wood** : an FM drum voice aimed at producing woody percussion sounds. **TO DO**
  - **FM metal** : an FM drum voice aimed at producing metallic percussion sounds. **FINISHED**
- - **Input** : an envelope on incoming audio with feedback control to turn any sound source into a drum voice. **TO FINISH**
+ - **Input** : an envelope on incoming audio to turn any sound source into a drum voice. **FINISHED**
 
 More details about each engine can be found in the .lib or .dsp file of the engine.
 
@@ -57,7 +57,7 @@ The modulation matrix, mixer structure etc. will only be done once all the engin
 - [ ] Noisy engine
 - [ ] FM wood engine
 - [x] FM metal engine
-- [ ] Input engine
+- [x] Input engine
 - [x] Per voice filter
 - [x] Distortion
 - [ ] Reverb
