@@ -1,0 +1,15 @@
+import("stdfaust.lib");
+
+panner(pan) = _ <: _ * left, _ * right
+with{
+    left = 1 - pan;
+    right = pan;
+};
+
+gain(lvl) = _ * lvl;
+
+mixer(smpLvl, smpPan, engLvl, engPan, inSmp, inEng) = sample, engine :> (_,_)
+with{
+    sample = inSmp * smpLvl : panner(smpPan);
+    engine = inEng * engLvl : panner(engPan);
+};
