@@ -1,3 +1,7 @@
+//-----------------wavetables.lib----------------//
+//Library containing hard-synced versions of classic oscillators.
+
+
 import("stdfaust.lib");
 
 //-------------Useful constants-------------//
