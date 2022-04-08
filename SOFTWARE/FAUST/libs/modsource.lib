@@ -1,0 +1,24 @@
+//-----------------MOD SOURCE----------------//
+//Modulation source page.
+//--------------PARAMETERS:
+//  1 - Rate : Mod carrier's rate
+//  2 - Depth : Mod carrier's amplitude
+//  3 - Shape : Mod carrier's waveform (1-sine, 2-tri, 3-saw, 4-square, 5-random)
+//  4 - Mode : Modulation mode (1-free, 2-sync, 3-reset, 4-envelope)
+/*BUG : currently only free mode works*/
+//  5 - destVoice : The voice of destination
+//  6 - destParam : The parameter of destination inside the chosen voice
+
+import("stdfaust.lib");
+import("wavetables.lib");
+
+modsource(rate, depth, shape, mode, destVoice, destParam, t) = carrier * depth, destVoice, destParam
+with {
+    sine(trig) = hssine(rate, trig);
+    tri(trig) = hstriangle(rate, trig);
+    square(trig) = hssquare(rate, trig);
+    saw(trig) = hssaw(rate, trig);
+    rand = no.lfnoise(rate);
+    carrier(mode) = ba.if(mode>0, t, 0) <: (sine, tri, saw, square, rand) : ba.selectn(5, shape);
+
+};
