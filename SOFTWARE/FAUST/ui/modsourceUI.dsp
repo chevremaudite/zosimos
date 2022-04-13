@@ -11,7 +11,9 @@
 
 import("modsource.lib");
 
-process = hgroup("Modulation source", modsource(rate, depth, shape, mode, pol, destVoice, destParam, trigger))
+process = hgroup("Modulation source", modsource(rate, depth, shape,
+                                                mode, pol,
+                                                destVoice, destParam, trigger))
 with{
     trigger = button("T"):ba.impulsify;
     mode = hslider("[0]Mode [style:menu{'Free':0;'Sync':1;'Reset':2;'Envelope':3}]", 0, 0, 3, 1);

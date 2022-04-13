@@ -13,15 +13,18 @@
 import("stdfaust.lib");
 import("wavetables.lib");
 
-modsource(rate, depth, shape, mode, pol, destVoice, destParam, t) = (source : polarizer) * depth,
-                                                                    destVoice, destParam
+modsource(rate, depth, shape,
+          mode, pol,
+          destVoice, destParam, t) = (source : polarizer) * depth,
+                                      destVoice, destParam
 with {
     sine(trig) = hssine(rate, trig);
     tri(trig) = hstriangle(rate, trig);
     square(trig) = hssquare(rate, trig);
     saw(trig) = hssaw(rate, trig);
     rand = no.lfnoise(rate*10);
-    carrier(reset) = (sine(reset), tri(reset), saw(reset), square(reset), rand) : ba.selectn(5, shape);
+    carrier(reset) = (sine(reset), tri(reset), saw(reset), square(reset), rand)
+                      : ba.selectn(5, shape);
     free = carrier(0);
     sync = carrier(0);
     reset = carrier(t);
