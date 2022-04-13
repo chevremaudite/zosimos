@@ -26,4 +26,4 @@ hssquare(f, t) = os.hs_osccos(f,t) : ma.signum;
 hssquarePWM(f, pw, t) = (os.lf_sawpos_reset(f,t)>pw);
 
 //Saw
-hssaw(f,t) = os.lf_sawpos_reset(f,t);
+hssaw(f,t) = (os.lf_sawpos_reset(f,t)-0.5)*2;
