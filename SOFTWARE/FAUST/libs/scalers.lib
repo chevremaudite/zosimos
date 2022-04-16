@@ -1,0 +1,25 @@
+//-----------------scalers.lib----------------//
+//Library containing various types of signal scaling functions
+
+//Normalize a signal in range [in_min, in_max]
+normalize(in_min, in_min, x) = (x-in_min)/(in_max - in_min);
+
+//Normalized signal to linear range [out_min, out_max]
+normtolin(out_min, out_max, x) = x * (out_max-out_min) : +(out_min);
+
+//Normalized signal to powered range [out_min, out_max] with exponent nexp
+normtolin(out_min, out_max, nexp, x) = (x^nexp) : *(out_max-out_min) : +(out_min);
+
+//Maps a range of input values [in_min, in_max] to an output range [out_min, out_max]
+maplin(in_min, in_max, out_min, out_max, x) = out_min +
+                                              (out_max-out_min) *
+                                              (x-in_min)/(max_in-min_in);
+
+//Maps a range of input values [in_min, in_max] to a powered output range [out_min, out_max] with exponent nexp
+mappow(in_min, in_max, out_min, out_max, nexp, x) = (out_min +
+                                                    ((out_max-out_min) *
+                                                    abs(norm_x)^nexp) *
+                                                    ma.signum(norm_x))
+with{
+    norm_x = normalize(in_min, in_max, x);
+};
