@@ -1,3 +1,6 @@
+//-----------------utilities.lib----------------//
+//Library containing various utility functions.
+
 import("stdfaust.lib");
 
 //Holds input trigger for n samples
