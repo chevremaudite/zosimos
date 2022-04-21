@@ -4,6 +4,10 @@ It is heavily inspired by Elektron machines such as the Octatrack and MachineDru
 
 *All this information is subject to change in the future as the project is still in a very early stage*  
 
+## Testing
+Individual engines can be tested using the FAUST online IDE.
+Just upload the .dsp file and the corresponding dependency libs to the editor, compile the .dsp file and the UI should pop up on the bottom of the page.
+
 ## Architecture
 The editing of all engine, sampler, effects and envelope parameters will be done through pages, allowing to show parameter values on the onboard display.
 Each page is composed of 4 parameters.
@@ -30,7 +34,6 @@ For the moment, the planned engines are the following :
  - **Bitwise** : an experimental drum voice based on bitwise operations between two PWM square waves. **FINISHED**
  - **Modal Drums** : a simple physical modeling engine consisting of a modal drum and a waveguide transient excited by noise. **TO FINISH**
  - **Noisy** : a noise based drum voice with noise filtering and noise resolution control. **TO FINISH**
- - **FM wood** : an FM drum voice aimed at producing woody percussion sounds. **TO DO**
  - **FM metal** : an FM drum voice aimed at producing metallic percussion sounds. **FINISHED**
  - **Input** : an envelope on incoming audio to turn any sound source into a drum voice. **FINISHED**
 
@@ -55,7 +58,6 @@ The modulation matrix, mixer structure etc. will only be done once all the engin
 - [ ] 93 Bang Bang engine
 - [x] Addictive engine
 - [ ] Noisy engine
-- [ ] FM wood engine
 - [x] FM metal engine
 - [x] Input engine
 - [x] Per voice filter
@@ -64,5 +66,5 @@ The modulation matrix, mixer structure etc. will only be done once all the engin
 - [ ] Delay
 - [ ] Chorus
 - [ ] Flanger
-- [ ] LFO/Envelope system
-- [ ] Mixer with panning and gain control
+- [x] LFO/Envelope system
+- [x] Mixer with panning and gain control
